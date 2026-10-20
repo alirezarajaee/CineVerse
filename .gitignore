@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+next-env.d.ts.bak
+
+# Environment & secrets
+.env
+.env*.local
+*.pem
+*.keystore
+
+# Databases
+db/
+*.db
+*.db-journal
+*.sqlite
+
+# Logs
+dev.log
+server.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts (Android)
+android/out/
+android/gen/
+android/*.zip
+android/tools/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+tool-results/
+upload/
+download/
+.agent/
+# Next.js generated types (auto-regenerated on dev/build)
+next-env.d.ts

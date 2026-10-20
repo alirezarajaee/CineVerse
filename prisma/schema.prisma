@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ——————————————————————————————— Users & Auth ———————————————————————————————
+// Zero-config account system: email/username + password (bcrypt) stored locally.
+// Guest sessions are real User rows (isGuest) so library data is server-persisted
+// and can be transferred to a real account on register/login.
+
+model User {
+  id           String   @id @default(cuid())
+  googleSub    String?  @unique
+  email        String?  @unique
+  username     String?  @unique
+  passwordHash String?
+  name         String?
+  image        String?
+  isGuest      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  favorites     Favorite[]
+  watchlist     WatchlistItem[]
+  history       WatchHistoryEntry[]
+  settings      UserSettings?
+  searchQueries SearchQuery[]
+}
+
+model UserSettings {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  uiLang         String   @default("fa")
+  subtitleLang   String   @default("fa")
+  audioLang      String   @default("fa")
+  defaultQuality String   @default("auto")
+  defaultServer  String   @default("vidlink")
+  saveHistory    Boolean  @default(true)
+  dataSaver      Boolean  @default(false)
+  autoplayNext   Boolean  @default(true)
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ——————————————————————————————— User Library ———————————————————————————————
+// Library items are snapshots of live metadata (IMDb-based provider), keyed by
+// imdbId — so ANY title from the full movie/series database can be saved.
+
+model Favorite {
+  userId    String
+  imdbId    String
+  type      String // movie | series
+  title     String
+  poster    String?
+  year      String?
+  rating    Float?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, imdbId])
+}
+
+model WatchlistItem {
+  userId    String
+  imdbId    String
+  type      String // movie | series
+  title     String
+  poster    String?
+  year      String?
+  rating    Float?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, imdbId])
+}
+
+model WatchHistoryEntry {
+  id           String   @id @default(cuid())
+  userId       String
+  imdbId       String
+  type         String // movie | series
+  title        String
+  poster       String?
+  year         String?
+  season       Int?
+  episode      Int?
+  episodeTitle String?
+  positionSec  Float    @default(0)
+  durationSec  Float    @default(0)
+  completed    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, updatedAt])
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  userId    String
+  query     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}

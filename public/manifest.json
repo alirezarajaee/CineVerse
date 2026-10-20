@@ -1,0 +1,33 @@
+{
+  "name": "CineVerse — دنیای فیلم و سریال در دستان شما",
+  "short_name": "CineVerse",
+  "description": "کشف و تماشای فیلم، سریال و انیمیشن با رابط فارسی، پخش واقعی، زیرنویس فارسی و کتابخانه شخصی. Built by Alireza Rajaee.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#08090D",
+  "theme_color": "#08090D",
+  "dir": "rtl",
+  "lang": "fa",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
